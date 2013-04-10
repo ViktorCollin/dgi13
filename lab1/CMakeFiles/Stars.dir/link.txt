@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/Stars.dir/starfield.cpp.o  -o Stars -rdynamic 

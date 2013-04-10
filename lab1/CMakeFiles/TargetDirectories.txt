@@ -1,0 +1,2 @@
+/afs/nada.kth.se/home/z/u1xpi8dz/kurser/åk4/dgi13/lab1/CMakeFiles/FirstLab.dir
+/afs/nada.kth.se/home/z/u1xpi8dz/kurser/åk4/dgi13/lab1/CMakeFiles/Starfield.dir
