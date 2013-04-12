@@ -8,7 +8,7 @@
 // * Linear interpolation
 // * glm::vec3 and std::vector
 
-#include "SDL.h"
+#include <SDL.h>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <vector>

@@ -12,9 +12,13 @@
 *.la
 *.a
 
+cmake_install.cmake
 CMakeFiles
 MakeCache.txt
 .DS_Store
+MakeFile
 
+
+# binarys
 FirstLab
 Starfield
