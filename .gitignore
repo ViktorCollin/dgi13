@@ -14,7 +14,7 @@
 
 cmake_install.cmake
 CMakeFiles
-MakeCache.txt
+CMakeCache.txt
 .DS_Store
 MakeFile
 
