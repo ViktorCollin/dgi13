@@ -11,3 +11,10 @@
 *.lai
 *.la
 *.a
+
+CMakeFiles
+MakeCache.txt
+.DS_Store
+
+FirstLab
+Starfield
