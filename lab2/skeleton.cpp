@@ -23,16 +23,19 @@ struct Intersection{
 // ----------------------------------------------------------------------------
 // GLOBAL VARIABLES
 
-const int SCREEN_WIDTH = 200;
+const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = SCREEN_WIDTH;
 const float MOVING_SPEED = 0.1;
 const float ROTATION_SPEED = M_PI/32;
 SDL_Surface* screen;
+vector<Triangle> triangles;
 float focalLength = SCREEN_HEIGHT;
 vec3 cameraPos(0.0, 0.0, -3.0);
 float yaw = 0.0;
 mat3 R;
-vector<Triangle> triangles;
+vec3 lightPos( 0, -0.5, -0.7 );
+vec3 lightColor = 14.f * vec3( 1, 1, 1 );
+vec3 indirectLight = 0.5f*vec3( 1, 1, 1 );
 int t;
 
 // ----------------------------------------------------------------------------
@@ -41,6 +44,7 @@ int t;
 void Update();
 void Draw();
 bool ClosestIntersection(vec3 start, vec3 dir, const vector<Triangle>& triangles, Intersection& closestIntersection);
+vec3 DirectLight( const Intersection& i );
 void initR();
 void updateR();
 
@@ -70,6 +74,7 @@ void Update()
 	cout << "Render time: " << dt << " ms." << endl;
 	Uint8* keystate = SDL_GetKeyState( 0 );
 	vec3 x(MOVING_SPEED, 0.0, 0.0);
+	vec3 y(0.0, MOVING_SPEED, 0.0);
 	vec3 z(0.0, 0.0, MOVING_SPEED);
 	
 	
@@ -87,6 +92,19 @@ void Update()
 		yaw -= ROTATION_SPEED;
 		updateR();
 	}
+	if( keystate[SDLK_w] ){
+		lightPos += R*z;
+	}
+	if( keystate[SDLK_s] ){
+		lightPos -= R*z;
+	}
+	
+	if( keystate[SDLK_a] ){
+		lightPos -= R*x;
+	}
+	if( keystate[SDLK_d] ){
+		lightPos += R*x;
+	}
 }
 
 void Draw()
@@ -98,11 +116,13 @@ void Draw()
 		for( int x=0; x<SCREEN_WIDTH; ++x ){
 			vec3 dir(x-SCREEN_WIDTH/2, y-SCREEN_HEIGHT/2, focalLength);
 			Intersection hit;
-			vec3 color(0.0, 0.0, 0.0);
 			if(ClosestIntersection(cameraPos, R*dir, triangles, hit)){
-				color = triangles[hit.triangleIndex].color;
+				//color = triangles[hit.triangleIndex].color;
+				PutPixelSDL( screen, x, y,  triangles[hit.triangleIndex].color*(indirectLight +DirectLight(hit)) );
+			} else {
+				PutPixelSDL( screen, x, y, vec3(0.0, 0.0, 0.0) );
 			}
-			PutPixelSDL( screen, x, y, color );
+ 
 		}
 	}
 
@@ -111,6 +131,7 @@ void Draw()
 
 	SDL_UpdateRect( screen, 0, 0, 0, 0 );
 }
+
 bool ClosestIntersection(vec3 start, vec3 dir, const vector<Triangle>& triangles, Intersection& closestIntersection){
 	closestIntersection.distance = numeric_limits<float>::max();
 	closestIntersection.triangleIndex = -1;
@@ -130,6 +151,24 @@ bool ClosestIntersection(vec3 start, vec3 dir, const vector<Triangle>& triangles
 	return closestIntersection.triangleIndex != -1;
 }
 
+vec3 DirectLight(const Intersection& i){
+	vec3 lightDir = lightPos-i.position;
+	float dist = glm::length(lightDir);
+	lightDir = glm::normalize(lightDir);
+	float dist2 = numeric_limits<float>::max();
+	Intersection hit;
+	if (ClosestIntersection(i.position, lightDir, triangles, hit)){
+		dist2 = glm::length(i.position-hit.position);
+	}
+	float s = glm::dot(lightDir, triangles[i.triangleIndex].normal);
+	if (dist2 < (dist-0.00001) || s < 0.00001){
+		return vec3(0.0, 0.0, 0.0);
+	}else{
+		return (lightColor * s/(float(4*M_PI)*dist*dist));
+	}
+	
+}
+
 void initR(){
  	R[0][0] = cos(yaw);
  	R[0][1] = 0;
@@ -139,14 +178,14 @@ void initR(){
  	R[1][1] = 1;
  	R[1][2] = 0;
 
- 	R[2][0] = -sin(yaw);
+ 	R[2][0] = -R[0][2];
  	R[2][1] = 0;
- 	R[2][2] = cos(yaw);
+ 	R[2][2] = R[0][0];
 }
 void updateR(){
 	R[0][0] = cos(yaw);
 	R[0][2] = sin(yaw);
 
-	R[2][0] = -sin(yaw);
-	R[2][2] = cos(yaw);
+	R[2][0] = -R[0][2];
+	R[2][2] = R[0][0];
 }
