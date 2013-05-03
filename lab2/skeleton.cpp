@@ -14,6 +14,7 @@ using glm::mat3;
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 500;
 SDL_Surface* screen;
+vector<Triangle> triangles;
 int t;
 
 // ----------------------------------------------------------------------------
@@ -25,8 +26,9 @@ void Draw();
 int main( int argc, char* argv[] )
 {
 	screen = InitializeSDL( SCREEN_WIDTH, SCREEN_HEIGHT );
+	LoadTestModel( vector<Triangle> & triangles );
+	
 	t = SDL_GetTicks();	// Set start value for timer.
-
 	while( NoQuitMessageSDL() )
 	{
 		Update();
