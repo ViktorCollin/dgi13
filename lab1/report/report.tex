@@ -29,21 +29,54 @@ Total pages: \pageref{LastPage}
 
 \clearpage
 \setcounter{page}{1}
-\section{Introduction}
+\section*{Introduction}
 This lab focuses on getting to know the basics of graphics programming such as the 
 environments, libraries and simple algorithms to get started. After getting the environment running, the assignment is to write two programs; one in 2D and one in 3D. Below those two are explained in detail. 
 
-\part{Interpolation}
-\section{Problem statement}
-The assignment here is basically to get SDL running and to linearly interpolate between pixels on the screen.
+\section{Interpolation}
+\subsection{Assignment}
+The assignment here is basically to get SDL running and to linearly interpolate between pixels on the screen to create a 2D-image.
 
-\section{Method}
+\subsection{Method}
 We started by defining the colors on the four corners of the screen. Next, we interpolate vertically between the lower and upper left and right corners. When we have the borders, we interpolate horizontally to achieve the image required. 
-\section{Result}
-\includegraphics{screenshot1.pdf}
+
+\subsection{Result}
+After getting the environment and libraries up and running, we did not really encounter any problems doing this assignment. The task was pretty straight-forward and was a good introduction to the area of graphics programming. After implementing the program, the output produced was as in figure \ref{fig1}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{screenshot1.png}
+	\caption{Final output}
+	\label{fig1}
+\end{figure}
 
 \clearpage
-\part{Starfield}
+\section{Starfield}
+\subsection{Assignment}
+The second part of the lab is to create something called the starfield effect. The starfield effect is basically points which moves toward the camera in real-time. This creates the 3D illusion of moving forward through space.
+\subsection{Method}
+At first, the goal was simply to be able to spread the stars on our screen to get something that resembles a sky with a lot of stars. Once we got that done, the next task was to get the stars moving. The movement should only be along the z-axis but since we wanted a 3D-effect, some calculations was needed to realistically project the 3D-points onto a 2D-canvas. The next part of the implementation was to get the fading effect working. To keep the stars coming towards the camera we relocate the stars going out of the canvas to the center again. To avoid the effect of stars popping up out of nowhere we then make them fade in to prevent this. Finally, to complete the assignment, we made the stars have "tails" visualising the speed they (or the camera) are travelling by and showing the projection of the distance recently travelled. 
+\subsection{Result}
+We did not have much trouble doing this part of the lab either. While there was a lot more math involved than in the first assignment, it was still pretty straight-forward to implement. The only real problem we encountered was our stars moving away from us rather than coming towards us which was required. The error was (of course) that we added instead of subtracted the z-value difference of the stars on each update.
+
+Below is the output from the different stages of completion of our program:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{screenshot2.png}
+	\caption{Initial output}
+	\label{fig1}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{screenshot3.png}
+	\caption{Starfield with stars fading}
+	\label{fig1}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{screenshot4.png}
+	\caption{Final output: fading-effect and star-tails.}
+	\label{fig1}
+\end{figure}
 
 
 \end{document}
