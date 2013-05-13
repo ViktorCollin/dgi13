@@ -23,6 +23,9 @@ using glm::vec3;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int NUM_STARS = 1000;
+
+const bool USE_FADE = true;
+const bool USE_TAILS = true;
 const int TAIL_STEP = 30;
 const float SPEED = 0.0005;
 const float F = SCREEN_HEIGHT/2;
@@ -81,17 +84,26 @@ void Draw(){
 	float u,v;
 	SDL_FillRect(screen,0,0);
 	for(size_t s = 0; s < NUM_STARS; ++s){
-		float c = 0.2/(stars[s].z*stars[s].z);
-		vec3 color(c,c,c);
-		vec3 prev(stars[s].x, stars[s].y, stars[s].z + dt*SPEED*5);
-		vector<vec3> tail(TAIL_STEP);
-		vector<vec3> colors(TAIL_STEP);
-		Interpolate(prev, stars[s], tail);
-		Interpolate(vec3(0,0,0), color, colors);
-		for(int j=0;j<TAIL_STEP;++j){
-			u = F * (tail[j].x/tail[j].z) + (SCREEN_WIDTH/2);
-			v = F * (tail[j].y/tail[j].z) + (SCREEN_HEIGHT/2);
-			PutPixelSDL(screen, u, v, colors[j]);
+		vec3 color(1.0,1.0,1.0);
+		if(USE_FADE){
+			float c = 0.2/(stars[s].z*stars[s].z);
+			color *= c;
+		}
+		if(USE_TAILS){
+			vec3 prev(stars[s].x, stars[s].y, stars[s].z + dt*SPEED*5);
+			vector<vec3> tail(TAIL_STEP);
+			vector<vec3> colors(TAIL_STEP);
+			Interpolate(prev, stars[s], tail);
+			Interpolate(vec3(0,0,0), color, colors);
+			for(int j=0;j<TAIL_STEP;++j){
+				u = F * (tail[j].x/tail[j].z) + (SCREEN_WIDTH/2);
+				v = F * (tail[j].y/tail[j].z) + (SCREEN_HEIGHT/2);
+				PutPixelSDL(screen, u, v, colors[j]);
+			}
+		}else{
+			u = F * (stars[s].x/stars[s].z) + (SCREEN_WIDTH/2);
+			v = F * (stars[s].y/stars[s].z) + (SCREEN_HEIGHT/2);
+			PutPixelSDL(screen, u, v, color);
 		}
 	}
 	if( SDL_MUSTLOCK(screen) )

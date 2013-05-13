@@ -2,7 +2,7 @@
 
 cmake_minimum_required (VERSION 2.6)
 project ( FirstLab )
-add_executable( FirstLab skeleton.cpp)
+add_executable( FirstLab firstlab.cpp)
 
 project ( Starfield )
 add_executable( Starfield starfield.cpp)
