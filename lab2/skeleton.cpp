@@ -118,7 +118,7 @@ void Draw()
 			Intersection hit;
 			if(ClosestIntersection(cameraPos, R*dir, triangles, hit)){
 				//color = triangles[hit.triangleIndex].color;
-				PutPixelSDL( screen, x, y,  triangles[hit.triangleIndex].color*(indirectLight +DirectLight(hit)) );
+				PutPixelSDL( screen, x, y, triangles[hit.triangleIndex].color*(indirectLight + DirectLight(hit)) );
 			} else {
 				PutPixelSDL( screen, x, y, vec3(0.0, 0.0, 0.0) );
 			}
@@ -153,16 +153,13 @@ bool ClosestIntersection(vec3 start, vec3 dir, const vector<Triangle>& triangles
 
 vec3 DirectLight(const Intersection& i){
 	vec3 lightDir = lightPos-i.position;
+	float s = glm::dot(lightDir, triangles[i.triangleIndex].normal);
+	if(s < 0.00001) return vec3(0.0, 0.0, 0.0);
 	float dist = glm::length(lightDir);
 	lightDir = glm::normalize(lightDir);
-	float dist2 = numeric_limits<float>::max();
 	Intersection hit;
-	if (ClosestIntersection(i.position, lightDir, triangles, hit)){
-		dist2 = glm::length(i.position-hit.position);
-	}
-	float s = glm::dot(lightDir, triangles[i.triangleIndex].normal);
-	if (dist2 < (dist-0.00001) || s < 0.00001){
-		return vec3(0.0, 0.0, 0.0);
+	if (ClosestIntersection(i.position, lightDir, triangles, hit) && glm::length(i.position-hit.position) < (dist-0.00001)){
+			return vec3(0.0, 0.0, 0.0);
 	}else{
 		return (lightColor * s/(float(4*M_PI)*dist*dist));
 	}
