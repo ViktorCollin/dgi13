@@ -31,8 +31,8 @@ Total pages: \pageref{LastPage}
 \setcounter{page}{1}
 \section{Introduction}
 The purpose of this lab is to learn how to build a raytracer and use it to render an image of a 3D environment that consists of triangular shapes. The lab also includes light models, shading and camera movement. 
-\section{Problem statement}
-Given a model of a room the assignment is to build a raytracer that can handle 
+\section{Assignment}
+The assignment is to implement a raytracer which can create images given a 3D-model by tracing the rays reaching a simulated camera. The implementation should be done in several steps, each with new functionality or other improvements. The final implementation should include a mobile camera, simulated light-sources as well as light reflection for diffuse surfaces.
 \section{Method}
 \subsection{First implementation}
 As a first step we built our raytracer to send a ray thru each pixel on the screen and fining the closes intersection with the predefined model of the room, then it render that pixel to be the color of the intersected shape. If the ray did not hit any shape we  render the pixel to be black. See the output of this in figure \ref{fig1}.
