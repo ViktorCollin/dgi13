@@ -17,8 +17,10 @@ CMakeFiles
 CMakeCache.txt
 .DS_Store
 MakeFile
-
+*.pdf
 
 # binarys
 FirstLab
 Starfield
+SecondLab
+ThirdLab
