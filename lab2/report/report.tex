@@ -41,7 +41,7 @@ As a first step we built our raytracer to send a ray thru each pixel on the scre
 Next step was to implement an interactive environment were the user with the help of the keyboard should be able to move and rotate the camera. Rotations is implemented by increasing or decreasing an angle and then updating the rotation matrix \verb|R|. movement in the forward and backward directions is then done by multiplying \verb|R| with a movement speed in the \verb|z| direction. The rays sent thru each pixel is then sent in the direction the camera is facing.
 
 \subsection{Direct light}
-To introduce shading we introduced a light source in the ceiling of the room. When the ray from the camera hit a shape we sent a new ray from the intersection point towards the light source to see if there was an object shadowing that pixel. If so the pixel was painted black otherwise the amount of light was calculated based on the distance from the light.   
+To introduce shading we introduced a light source in the ceiling of the room. When the ray from the camera hit a shape we sent a new ray from the intersection point towards the light source to see if there was an object shadowing that pixel. If so the pixel was painted black otherwise the amount of light was calculated based on the distance from the light. At first this implementation did not take in to consideration the color of the shape that was hit by the first ray. See the output of this in figure \ref{fig2}.  
 \section{Result}
 
 \begin{figure}[h!]
@@ -49,6 +49,13 @@ To introduce shading we introduced a light source in the ceiling of the room. Wh
 	\includegraphics[width=0.75\linewidth]{screenshot1.png}
 	\caption{Output from first run}
 	\label{fig1}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{screenshot2.png}
+	\caption{Output from the direct light model}
+	\label{fig2}
 \end{figure}
 
 \end{document}
