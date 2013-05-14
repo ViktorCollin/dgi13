@@ -49,21 +49,25 @@ To take in to consideration the colors of the boxes and walls we just multiply t
 
 \subsection{Indirect light}
 Instead of making the light bouncing and defusing on each surface witch is a complex task we just overlay the direct light with a uniformed light for all pixels. This is a much simpler way an the result is acceptable realistic. We just add a constant light to the direct light before color computation. the result can be seen int figure \ref{fig5}. 
+
 \section{Result}
+This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
 
 \begin{figure}[h!]
 	\centering	
 	\includegraphics[width=0.45\linewidth]{screenshot1.png}
-	\caption{Output from first run}
+	\caption{Output from first run without lighting}
 	\label{fig1}
 \end{figure}
 
+As can be seen above, a picture without lighting is ridiculously far from a realistic looking pictures but as soon as lighting and shadows are introduced it gets better real fast. It was fun to se the picture evolving for each completed implementation step. 
+
 \begin{figure}[h!]
 	\centering
-	\begin{subfigure}[h!]{0.3\linewidth}
+	\begin{subfigure}[h]{0.3\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{screenshot2.png}
-		\caption{Normals are facing away from light source}
+		\caption{Facing away from light}
 		\label{fig2}
 	\end{subfigure}
 	\begin{subfigure}[h!]{0.3\linewidth}
@@ -84,7 +88,7 @@ Instead of making the light bouncing and defusing on each surface witch is a com
 \begin{figure}[h!]
 	\centering	
 	\includegraphics[width=0.45\linewidth]{screenshot4.png}
-	\caption{Output from finished program}
+	\caption{Output from the finished program}
 	\label{fig5}
 \end{figure}
 

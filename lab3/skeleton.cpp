@@ -179,12 +179,10 @@ void Interpolate( Pixel a, Pixel b, vector<Pixel>& result ){
 		result[i].x = int(current.x+i*stepX);
 		result[i].y = int(current.y+i*stepY);
 		result[i].zinv = double(current.zinv+i*stepZinv);
-/*		
-		result[i] = current;
+	/*	result[i] = current;
 		current.x += stepX;
 		current.y += stepY;
-		current.zinv += stepZinv;
-*/		
+		current.zinv += stepZinv;*/		
 	}
 }
 
