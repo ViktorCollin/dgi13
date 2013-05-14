@@ -17,7 +17,7 @@ using glm::mat3;
 
 // ----------------------------------------------------------------------------
 // GLOBAL VARIABLES
-const bool DEBUG = true;
+const bool DEBUG = false;
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = SCREEN_WIDTH;
 const float MOVING_SPEED = 0.001;
@@ -37,7 +37,13 @@ struct Pixel{
 	int x;
 	int y;
 	float zinv;
+	friend ostream& operator<< (ostream& os, const Pixel & p);
 };
+
+ostream& operator<< (ostream& os, const Pixel & p){
+	os << "(" << p.x <<", "<<p.y<<")";
+	return os;
+}
 
 // ----------------------------------------------------------------------------
 // FUNCTIONS
@@ -144,7 +150,7 @@ void Draw()
 		vertices[1] = triangles[i].v1;
 		vertices[2] = triangles[i].v2;
 		currentColor = triangles[i].color;
-		cerr << "Start drawing triangle: " << i << endl;
+		if (DEBUG) cerr << "Start drawing triangle: " << i << endl;
 		DrawPolygon(vertices);
 	}
 	
@@ -163,17 +169,22 @@ void VertexShader(const vec3 & v, Pixel & p){
 }
 
 void Interpolate( Pixel a, Pixel b, vector<Pixel>& result ){
-	size_t N = result.size();
-	if(DEBUG) cerr << "Interpolate: (" << a.x << ", " << a.y << ") to (" << b.x << ", " << b.y << ") in " << N << "steps" << endl;
-	float stepX = (b.x-a.x) / float(max(int(N-1), 1));
-	float stepY = (b.y-a.y) / float(max(int(N-1), 1));
-	float stepZinv = (b.zinv-a.zinv) / float(max(int(N-1), 1));
+	float size = result.size()-1;
+	if(DEBUG) cerr << "Interpolate: (" << a.x << ", " << a.y << ") to (" << b.x << ", " << b.y << ") in " << size+1 << "steps" << endl;
+	float stepX = (b.x-a.x) / max(size, 1.f);
+	float stepY = (b.y-a.y) / max(1.f, size);
+	float stepZinv = (b.zinv-a.zinv) / max(size, 1.f);
 	Pixel current = a;
-	for (size_t i = 0; i < N; i++){
+	for (size_t i = 0; i < size+1; i++){
+		result[i].x = int(current.x+i*stepX);
+		result[i].y = int(current.y+i*stepY);
+		result[i].zinv = double(current.zinv+i*stepZinv);
+/*		
 		result[i] = current;
 		current.x += stepX;
 		current.y += stepY;
 		current.zinv += stepZinv;
+*/		
 	}
 }
 
@@ -220,12 +231,15 @@ void DrawPolygonEdges(const vector<vec3> & vertices){
 
 void ComputePolygonRows(const vector<Pixel>& vertexPixels, vector<Pixel>& leftPixels, vector<Pixel>& rightPixels ){
 	if(DEBUG) cerr << "ComputePolygonRows: " << endl;
+	
 	int min_y = numeric_limits<int>::max();
 	int max_y = numeric_limits<int>::min();
+	
 	for(int i=0; i<vertexPixels.size(); ++i){
 		if(vertexPixels[i].y < min_y) min_y = vertexPixels[i].y;
 		if(vertexPixels[i].y > max_y) max_y = vertexPixels[i].y;
 	}
+
 	int lenght = (max_y - min_y) + 1;
 	leftPixels.resize(lenght);
 	rightPixels.resize(lenght);
@@ -236,21 +250,34 @@ void ComputePolygonRows(const vector<Pixel>& vertexPixels, vector<Pixel>& leftPi
 		rightPixels[i].y = min_y + i;
 	}
 	
-	for(int i=0; i<vertexPixels.size(); ++i){
-		int j = (i+1) % vertexPixels.size();
+	for(size_t i=0; i<vertexPixels.size(); ++i){
+		size_t j = (i+1) % vertexPixels.size();
+		/*
 		int dx = std::abs(vertexPixels[i].x - vertexPixels[j].x);
 		int dy = std::abs(vertexPixels[i].y - vertexPixels[j].y);
 		int pixels = max( dx, dy ) + 1;
+		*/
+		ivec2 d = glm::abs(ivec2(vertexPixels[i].x,vertexPixels[i].y) - ivec2(vertexPixels[j].x, vertexPixels[j].y));
+		int pixels = glm::max(d.x,d.y) + 1;
 		vector<Pixel> line( pixels );
 		Interpolate(vertexPixels[i], vertexPixels[j], line );
-		for (vector<Pixel>::iterator it = line.begin(); it != line.end(); it++){
+		for (vector<Pixel>::const_iterator it = line.begin(); it != line.end(); it++){
+			if (it->y < min_y || it->y > max_y) continue;
 			if(rightPixels[it->y - min_y].x < (it->x)){
-				rightPixels[it->y - min_y].x = (it->x);
+				rightPixels[it->y - min_y] = *it;
 			}
 			if(leftPixels[it->y - min_y].x > (it->x)){
-				leftPixels[it->y - min_y].x = (it->x);
+				leftPixels[it->y - min_y] = *it;
 			}
 		}
+	}
+}
+
+void PixelShader(const Pixel & p){
+	if (p.x < 0 || p.x >= SCREEN_WIDTH || p.y < 0 || p.y >= SCREEN_HEIGHT) return;
+	if(p.zinv + 0.0001 > depthBuffer[p.x][p.y]){
+		PutPixelSDL(screen, p.x, p.y, currentColor);
+		depthBuffer[p.x][p.y] = p.zinv;
 	}
 }
 
@@ -258,7 +285,15 @@ void DrawPolygonRows( const vector<Pixel>& leftPixels, const vector<Pixel>& righ
 	if(DEBUG) cerr << "DrawPolygonRows: " << leftPixels.size() << " to draw" << endl;
 	
 	for(int i=0; i<leftPixels.size(); ++i){
-		DrawHorisontalLine(screen, leftPixels[i], rightPixels[i], currentColor);
+		ivec2 delta = glm::abs(ivec2(leftPixels[i].x, leftPixels[i].y) - ivec2(rightPixels[i].x, rightPixels[i].y));
+		int pixels = glm::max(delta.x, delta.y) + 1;
+		vector<Pixel> line(pixels);
+		Interpolate(leftPixels[i], rightPixels[i], line);
+
+		for(vector<Pixel>::const_iterator it = line.begin(); it != line.end(); it++){
+	//		cerr << *it << endl;
+			PixelShader(*it);
+		}
 	}
 	
 }
@@ -270,7 +305,9 @@ void DrawPolygon( const vector<vec3>& vertices ){
 		VertexShader( vertices[i], vertexPixels[i] );
 	vector<Pixel> leftPixels;
 	vector<Pixel> rightPixels;
+//
 	ComputePolygonRows( vertexPixels, leftPixels, rightPixels );
+//
 	DrawPolygonRows( leftPixels, rightPixels );
 }
 
