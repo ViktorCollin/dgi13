@@ -16,9 +16,9 @@
 \pagestyle{fancy}
 
 \author{Viktor Collin \\ <\url{vcollin@kth.se}> \\ 19880316-0277 \and Simon \"{O}sterman \\ <\url{simost@kth.se}> \\ 19880205-0156}
-\title{\textbf{DH2323 Computer Graphics with Interaction \\ Lab 2 : Raytracer}}
+\title{\textbf{DH2323 Computer Graphics with Interaction \\ Lab 3 : Rasterisation}}
 
-\fancyhead[L]{\textbf{DH2323 : Lab 2} }
+\fancyhead[L]{\textbf{DH2323 : Lab 3} }
 \fancyhead[R]{Viktor Collin \& Simon \"{O}sterman : Page \thepage }
 \fancyfoot{}{}
 
@@ -32,9 +32,9 @@ Total pages: \pageref{LastPage}
 \clearpage
 \setcounter{page}{1}
 \section{Introduction}
-The purpose of this lab is to learn how to build a raytracer and use it to render an image of a 3D environment that consists of triangular shapes. The lab also includes light models, shading and camera movement. 
+The purpose of this lab is to learn how to build a rastreriser and use it to render an image of a 3D environment that consists of triangular shapes. The lab also includes light models and camera movement. 
 \section{Assignment}
-The assignment is to implement a raytracer which can create images given a 3D-model by tracing the rays reaching a simulated camera. The implementation should be done in several steps, each with new functionality or other improvements. The final implementation should include a mobile camera, simulated light-sources as well as light reflection for diffuse surfaces.
+The objective of third lab is pretty much the same as in the second with the raytracing. You are supposed to create a 3D-image but instead of tracing rays you are supposed to implement a rasteriser.
 \section{Method}
 \subsection{First implementation}
 As a first step we built our raytracer to send a ray thru each pixel on the screen and fining the closes intersection with the predefined model of the room, then it render that pixel to be the color of the intersected shape. If the ray did not hit any shape we  render the pixel to be black. See the output of this in figure \ref{fig1}.
@@ -52,6 +52,10 @@ Instead of making the light bouncing and defusing on each surface witch is a com
 
 \section{Result}
 This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
+
+We had a number of problems concerning the interpolation. First off, 
+
+perspective-correct interpolation. 
 
 \begin{figure}[h!]
 	\centering	
