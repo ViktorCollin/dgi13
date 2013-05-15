@@ -60,34 +60,35 @@ As shown in the figure \ref{fig15} the blue box is in front of the red since no 
 
 \subsection{The z-buffer}
 To be able to determine at which depth each pixel is located, a z-buffer is used. A problem with the z-buffer is that you can not use linear interpolation along the z-axis whilst using the buffer. Instead, you can linearly interpolate the z$^{-1}$ and still get a good result. Below is a print of the z-buffer:
-
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.40\linewidth]{screenshotz.png}
-	\caption{The Z-Buffer}
-	\label{figz}
+	\begin{subfigure}[h]{0.4\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{screenshotz.png}
+		\caption{The Z-Buffer}
+		\label{figz}
+	\end{subfigure}
+	\begin{subfigure}[h!]{0.4\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{screenshot2.png}
+		\caption{The output when using a Z-Buffer}
+		\label{fig2}
+	\end{subfigure}
 \end{figure}
+
 \clearpage
-The result of using a z-buffer is much better as can be seen below in figure \ref{fig2}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.45\linewidth]{screenshot2.png}
-	\caption{The output when using a Z-Buffer}
-	\label{fig2}
-\end{figure}
-
 \subsection{Lighting}
 We implemented two ways to determine the direct lighting. The first one was calculating the direct light in each vertices and then interpolate the lighting for the rest of the polygon. This is shown below in figure \ref{fig3}. The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object just the object itself. We also uses approximation of indirect light in the sam way as in lab 2.
 
 \begin{figure}[h!]
 	\centering
-	\begin{subfigure}[h]{0.3\linewidth}
+	\begin{subfigure}[h]{0.4\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{screenshot3.png}
 		\caption{Light calculated per vertex}
 		\label{fig3}
 	\end{subfigure}
-	\begin{subfigure}[h!]{0.3\linewidth}
+	\begin{subfigure}[h!]{0.4\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{screenshot4.png}
 		\caption{Light calculated per pixel}
@@ -99,14 +100,19 @@ We implemented two ways to determine the direct lighting. The first one was calc
 As can be seen in the figures above the vertex version gets some anomalies when two polygons lies parallel to each other side by side, eg. the roof of the room. There is an anomaly in the pixel version to, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation, to fix this we had to do perspective correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turd out to be pretty spectacular. (see figure \ref{fun} below)
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\linewidth]{fun.png}
+	\includegraphics[width=0.35\linewidth]{fun.png}
 	\caption{An incorrect implementation of perspective correct interpolation}
 	\label{fun}
 \end{figure}
-
+\clearpage
 \section{Result}
 We had a lot more problem with this lab then the first two, but we are pleased with the result 
-
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.45\linewidth]{screenshot5.png}
+	\caption{Output from the finished program}
+	\label{fig5}
+\end{figure}
 
 \section{just for fun}
  we did a fast implementation of the raytracing shadows in our rastarizer. Turned out that it was not that easy as just copying the functions needed and the point of using a rastarizer got lost due to the time consuming task to calculate shadows the raytracer way. Then we ran out of time do do it the proper way eg. with a shadow map.
