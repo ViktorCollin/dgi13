@@ -37,32 +37,30 @@ The purpose of this lab is to learn how to build a rastreriser and use it to ren
 The objective of third lab is pretty much the same as in the second with the raytracing. You are supposed to create a 3D-image but instead of tracing rays you are supposed to implement a rasteriser.
 \section{Method}
 \subsection{First implementation}
-As a first step we built our raytracer to send a ray thru each pixel on the screen and fining the closes intersection with the predefined model of the room, then it render that pixel to be the color of the intersected shape. If the ray did not hit any shape we  render the pixel to be black. See the output of this in figure \ref{fig1}.
+As a first step we built our rasteriser to project the 3D-environment onto a 2D screen and then trace the vertices of each triangle and then draw the lines between the end-points \ref{fig1}. We also implemented the possibility to move the camera in the same fashion as in lab 2. 
 
-\subsection{Camera movement}
-Next step was to implement an interactive environment were the user with the help of the keyboard should be able to move and rotate the camera. Rotations is implemented by increasing or decreasing an angle and then updating the rotation matrix \verb|R|. movement in the forward and backward directions is then done by multiplying \verb|R| with a movement speed in the \verb|z|-direction. The rays sent thru each pixel is then sent in the direction the camera is facing.
+\begin{figure}[h!]
+	\centering	
+	\includegraphics[width=0.45\linewidth]{screenshot1.png}
+	\caption{Output from the first implementation}
+	\label{fig1}
+\end{figure}
 
-\subsection{Direct light}
-To introduce shading we introduced a light source in the ceiling of the room. When the ray from the camera hit a shape if the normal of that shape is facing away from the light there is no light that hits the surface. See the output of this in figure \ref{fig2}. We also sends a new ray from the intersection point towards the light source to see if there was an object shadowing that pixel. If so the pixel was painted black otherwise the amount of light was calculated based on the distance from the light. At first this implementation did not take in to consideration the color of the shape that was hit by the first ray. See the output of the shading in figure \ref{fig3}.
-We also implemented a possibility for the user to move the light source in a similar way as moving the camera but instead of rotating it moves in the \verb|x|-direction.
-To take in to consideration the colors of the boxes and walls we just multiply the color with the direct light. See the output of this in figure \ref{fig4}
+\subsection{Drawing Polygons}
+To be able to draw the entire model 
 
+
+\subsection{The z-buffer}
 \subsection{Indirect light}
 Instead of making the light bouncing and defusing on each surface witch is a complex task we just overlay the direct light with a uniformed light for all pixels. This is a much simpler way an the result is acceptable realistic. We just add a constant light to the direct light before color computation. the result can be seen int figure \ref{fig5}. 
 
 \section{Result}
 This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
 
-We had a number of problems concerning the interpolation. First off, 
 
-perspective-correct interpolation. 
 
-\begin{figure}[h!]
-	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshot1.png}
-	\caption{Output from first run without lighting}
-	\label{fig1}
-\end{figure}
+-Perspective-correct interpolation. 
+
 
 As can be seen above, a picture without lighting is ridiculously far from a realistic looking pictures but as soon as lighting and shadows are introduced it gets better real fast. It was fun to se the picture evolving for each completed implementation step. 
 
@@ -76,13 +74,13 @@ As can be seen above, a picture without lighting is ridiculously far from a real
 	\end{subfigure}
 	\begin{subfigure}[h!]{0.3\linewidth}
 		\centering
-		\includegraphics[width=\linewidth]{screenshot25.png}
+		\includegraphics[width=\linewidth]{screenshot3.png}
 		\caption{With shadows}
 		\label{fig3}
 	\end{subfigure}
 	\begin{subfigure}[h!]{0.3\linewidth}
 		\centering
-		\includegraphics[width=\linewidth]{screenshot3.png}
+		\includegraphics[width=\linewidth]{screenshot4.png}
 		\caption{With shadows and colors}
 		\label{fig4}
 	\end{subfigure}
@@ -91,11 +89,29 @@ As can be seen above, a picture without lighting is ridiculously far from a real
 
 \begin{figure}[h!]
 	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshot4.png}
+	\includegraphics[width=0.45\linewidth]{screenshot5.png}
 	\caption{Output from the finished program}
 	\label{fig5}
 \end{figure}
 
+\begin{figure}[h!]
+	\centering	
+	\includegraphics[width=0.45\linewidth]{screenshotz.png}
+	\caption{Output from the finished program}
+	\label{fig5}
+\end{figure}
 
+\begin{figure}[h!]
+	\centering	
+	\includegraphics[width=0.45\linewidth]{fun.png}
+	\caption{Output from the finished program}
+	\label{fig5}
+\end{figure}
+\begin{figure}[h!]
+	\centering	
+	\includegraphics[width=0.45\linewidth]{shadows.png}
+	\caption{Output from the finished program}
+	\label{fig5}
+\end{figure}
 
 \end{document}
