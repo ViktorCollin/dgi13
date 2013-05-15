@@ -18,7 +18,7 @@ using glm::mat3;
 // ----------------------------------------------------------------------------
 // GLOBAL VARIABLES
 const bool DEBUG = false;
-const bool USE_SHADOWS = true;
+const bool USE_SHADOWS = false;
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = SCREEN_WIDTH;
 const float MOVING_SPEED = 0.001;
