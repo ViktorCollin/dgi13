@@ -42,17 +42,34 @@ As a first step we built our rasteriser to project the 3D-environment onto a 2D 
 \begin{figure}[h!]
 	\centering	
 	\includegraphics[width=0.45\linewidth]{screenshot1.png}
-	\caption{Output from the first implementation}
+	\caption{The outlines of the polygons}
 	\label{fig1}
 \end{figure}
-
+\clearpage
 \subsection{Drawing Polygons}
-To be able to draw the entire model 
+To be able to draw the entire model, we had to go through add a lot of calculations to be able to decide which pixels was contained in each polygon. This involves first calculating the top and the bottom of the polygon as well as the leftmost and rightmost pixels.   
 
+\begin{figure}[h!]
+	\centering	
+	\includegraphics[width=0.45\linewidth]{screenshot15.png}
+	\caption{Output of the model without using a z-buffer}
+	\label{fig15}
+\end{figure}
+
+As shown in the figure \ref{fig15} the blue box is in front of the red since no z-buffer is in use.
 
 \subsection{The z-buffer}
-\subsection{Indirect light}
-Instead of making the light bouncing and defusing on each surface witch is a complex task we just overlay the direct light with a uniformed light for all pixels. This is a much simpler way an the result is acceptable realistic. We just add a constant light to the direct light before color computation. the result can be seen int figure \ref{fig5}. 
+To be able to determine at which depth each pixel is located, a z-buffer is used. A problem with the z-buffer is that you can not use linear interpolation along the z-axis whilst using the buffer. Instead, you can linearly interpolate the z$^{-1}$ and still get a good result. Below is a print of the z-buffer:
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.45\linewidth]{screenshotz.png}
+	\caption{The Z-Buffer}
+	\label{figz}
+\end{figure}
+
+\subsection{Lighting}
+
 
 \section{Result}
 This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
