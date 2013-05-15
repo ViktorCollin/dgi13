@@ -63,72 +63,59 @@ To be able to determine at which depth each pixel is located, a z-buffer is used
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\linewidth]{screenshotz.png}
+	\includegraphics[width=0.40\linewidth]{screenshotz.png}
 	\caption{The Z-Buffer}
 	\label{figz}
 \end{figure}
+\clearpage
+The result of using a z-buffer is much better as can be seen below in figure \ref{fig2}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.45\linewidth]{screenshot2.png}
+	\caption{The output when using a Z-Buffer}
+	\label{fig2}
+\end{figure}
 
 \subsection{Lighting}
-
-
-\section{Result}
-This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
-
-
-
--Perspective-correct interpolation. 
-
-
-As can be seen above, a picture without lighting is ridiculously far from a realistic looking pictures but as soon as lighting and shadows are introduced it gets better real fast. It was fun to se the picture evolving for each completed implementation step. 
+We implemented two ways to determine the direct lighting. The first one was calculating the direct light in each vertices and then interpolate the lighting for the rest of the polygon. This is shown below in figure \ref{fig3}. The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object just the object itself. We also uses approximation of indirect light in the sam way as in lab 2.
 
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[h]{0.3\linewidth}
 		\centering
-		\includegraphics[width=\linewidth]{screenshot2.png}
-		\caption{Facing away from light}
-		\label{fig2}
-	\end{subfigure}
-	\begin{subfigure}[h!]{0.3\linewidth}
-		\centering
 		\includegraphics[width=\linewidth]{screenshot3.png}
-		\caption{With shadows}
+		\caption{Light calculated per vertex}
 		\label{fig3}
 	\end{subfigure}
 	\begin{subfigure}[h!]{0.3\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{screenshot4.png}
-		\caption{With shadows and colors}
+		\caption{Light calculated per pixel}
 		\label{fig4}
 	\end{subfigure}
-	\caption{Progress of the direct light model}
-\end{figure}
+	\caption{Two different ways to calculate direct light}
+\end{figure} 
 
+As can be seen in the figures above the vertex version gets some anomalies when two polygons lies parallel to each other side by side, eg. the roof of the room. There is an anomaly in the pixel version to, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation, to fix this we had to do perspective correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turd out to be pretty spectacular. (see figure \ref{fun} below)
 \begin{figure}[h!]
-	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshot5.png}
-	\caption{Output from the finished program}
-	\label{fig5}
-\end{figure}
-
-\begin{figure}[h!]
-	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshotz.png}
-	\caption{Output from the finished program}
-	\label{fig5}
-\end{figure}
-
-\begin{figure}[h!]
-	\centering	
+	\centering
 	\includegraphics[width=0.45\linewidth]{fun.png}
-	\caption{Output from the finished program}
-	\label{fig5}
+	\caption{An incorrect implementation of perspective correct interpolation}
+	\label{fun}
 \end{figure}
+
+\section{Result}
+We had a lot more problem with this lab then the first two, but we are pleased with the result 
+
+
+\section{just for fun}
+ we did a fast implementation of the raytracing shadows in our rastarizer. Turned out that it was not that easy as just copying the functions needed and the point of using a rastarizer got lost due to the time consuming task to calculate shadows the raytracer way. Then we ran out of time do do it the proper way eg. with a shadow map.
 \begin{figure}[h!]
-	\centering	
+	\centering
 	\includegraphics[width=0.45\linewidth]{shadows.png}
-	\caption{Output from the finished program}
-	\label{fig5}
+	\caption{An incorrect implementation of shadows}
+	\label{shadows}
 \end{figure}
+
 
 \end{document}
