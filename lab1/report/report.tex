@@ -14,7 +14,7 @@
 \pagestyle{fancy}
 
 \author{Viktor Collin \\ <\url{vcollin@kth.se}> \\ 19880316-0277 \and Simon \"{O}sterman \\ <\url{simost@kth.se}> \\ 19880205-0156}
-\title{\textbf{DH2323 Computer Graphics with Interaction \\ Lab 1 : Starfield}}
+\title{\textbf{DH2323 Computer Graphics with Interaction \\ Lab 1 : Star field}}
 
 \fancyhead[L]{\textbf{DH2323 : Lab 1} }
 \fancyhead[R]{Viktor Collin \& Simon \"{O}sterman : Page \thepage }
@@ -52,30 +52,31 @@ After getting the environment and libraries up and running, we did not really en
 \clearpage
 \section{Starfield}
 \subsection{Assignment}
-The second part of the lab is to create something called the starfield effect. The starfield effect is basically points which moves toward the camera in real-time. This creates the 3D illusion of moving forward through space.
+The second part of the lab is to create something called the star field effect. The star field effect is basically points which moves toward the camera in real-time. This creates the 3D illusion of moving forward through space.
 \subsection{Method}
-At first, the goal was simply to be able to spread the stars on our screen to get something that resembles a sky with a lot of stars. Once we got that done, the next task was to get the stars moving. The movement should only be along the z-axis but since we wanted a 3D-effect, some calculations was needed to realistically project the 3D-points onto a 2D-canvas. The next part of the implementation was to get the fading effect working. To keep the stars coming towards the camera we relocate the stars going out of the canvas to the center again. To avoid the effect of stars popping up out of nowhere we then make them fade in to prevent this. Finally, to complete the assignment, we made the stars have "tails" visualising the speed they (or the camera) are travelling by and showing the projection of the distance recently travelled. 
+At first, the goal was simply to be able to spread the stars on our screen to get something that resembles a sky with a lot of stars. Once we got that done, the next task was to get the stars moving. The movement should only be along the z-axis but since we wanted a 3D-effect, some calculations was needed to realistically project the 3D-points onto a 2D-canvas. The next part of the implementation was to get the fading effect working. To keep the stars coming towards the camera we relocate the stars going out of the canvas to the back again. To avoid the effect of stars popping up out of nowhere we then make them fade instead of being full bright. Finally, as an inprovment, we made the stars have ''tails'' visualizing the speed they (or the camera) are traveling by and showing the projection of the distance recently travelled. 
+
 \subsection{Result}
 We did not have much trouble doing this part of the lab either. While there was a lot more math involved than in the first assignment, it was still pretty straight-forward to implement. The only real problem we encountered was our stars moving away from us rather than coming towards us which was required. The error was (of course) that we added instead of subtracted the z-value difference of the stars on each update.
 
 Below is the output from the different stages of completion of our program:
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.75\linewidth]{screenshot2.png}
+	\includegraphics[width=0.7\linewidth]{screenshot2.png}
 	\caption{Initial output}
-	\label{fig1}
+	\label{fig2}
 \end{figure}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.75\linewidth]{screenshot3.png}
+	\includegraphics[width=0.7\linewidth]{screenshot3.png}
 	\caption{Starfield with stars fading}
-	\label{fig1}
+	\label{fig3}
 \end{figure}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.75\linewidth]{screenshot4.png}
+	\includegraphics[width=0.7\linewidth]{screenshot4.png}
 	\caption{Final output: fading-effect and star-tails.}
-	\label{fig1}
+	\label{fig4}
 \end{figure}
 
 
