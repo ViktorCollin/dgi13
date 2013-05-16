@@ -37,21 +37,21 @@ The purpose of this lab is to learn how to build a raytracer and use it to rende
 The assignment is to implement a raytracer which can create images given a 3D-model by tracing the rays reaching a simulated camera. The implementation should be done in several steps, each with new functionality or other improvements. The final implementation should include a mobile camera, simulated light-sources as well as light reflection for diffuse surfaces.
 \section{Method}
 \subsection{First implementation}
-As a first step we built our raytracer to send a ray thru each pixel on the screen and fining the closes intersection with the predefined model of the room, then it render that pixel to be the color of the intersected shape. If the ray did not hit any shape we  render the pixel to be black. See the output of this in figure \ref{fig1}.
+As a first step we built our raytracer to send a ray through each pixel on the screen and finding the closes intersection with the predefined model of the room. Next, it renders that pixel to be the color of the intersected shape. If the ray did not hit any shape, we render the pixel to be black. See the output of this in figure \ref{fig1}.
 
 \subsection{Camera movement}
-Next step was to implement an interactive environment were the user with the help of the keyboard should be able to move and rotate the camera. Rotations is implemented by increasing or decreasing an angle and then updating the rotation matrix \verb|R|. movement in the forward and backward directions is then done by multiplying \verb|R| with a movement speed in the \verb|z|-direction. The rays sent thru each pixel is then sent in the direction the camera is facing.
+Next step is to implement an interactive environment were the user with the help of the keyboard is able to move and rotate the camera. Rotations is implemented by increasing or decreasing an angle and then updating the rotation matrix \verb|R|. Movement in the forward and backward directions is then done by multiplying \verb|R| with the movement speed in the \verb|z|-direction. The rays sent through each pixel is then sent in the direction of the camera.
 
 \subsection{Direct light}
-To introduce shading we introduced a light source in the ceiling of the room. When the ray from the camera hit a shape if the normal of that shape is facing away from the light there is no light that hits the surface. See the output of this in figure \ref{fig2}. We also sends a new ray from the intersection point towards the light source to see if there was an object shadowing that pixel. If so the pixel was painted black otherwise the amount of light was calculated based on the distance from the light. At first this implementation did not take in to consideration the color of the shape that was hit by the first ray. See the output of the shading in figure \ref{fig3}.
-We also implemented a possibility for the user to move the light source in a similar way as moving the camera but instead of rotating it moves in the \verb|x|-direction.
-To take in to consideration the colors of the boxes and walls we just multiply the color with the direct light. See the output of this in figure \ref{fig4}
+To introduce shading we placed a light source in the ceiling of the room. When the ray from the camera hit a shape and the normal of that shape is facing away from the light, then there is no light that hits the surface. See the output of this in figure \ref{fig2}. We also send a new ray from the intersection point towards the light source to see if there was an object shadowing that pixel. If so, the pixel gets painted black, otherwise the amount of light is calculated based on the distance from the light. At first, this implementation did not take into consideration the color of the shape that was hit by the first ray. See the output of the shading in figure \ref{fig3}.
+We also implemented the possibility for the user to move the light source in a similar way as moving the camera but instead of rotating, it moves in the \verb|x|-direction.
+To take into consideration the colors of the boxes and walls, we multiply the color with the direct light. See the output of this in figure \ref{fig4}
 
 \subsection{Indirect light}
-Instead of making the light bouncing and defusing on each surface witch is a complex task we just overlay the direct light with a uniformed light for all pixels. This is a much simpler way an the result is acceptable realistic. We just add a constant light to the direct light before color computation. the result can be seen int figure \ref{fig5}. 
+Instead of making the light bouncing and defusing on each surface which is a complex task, we just overlay the direct light with a uniform light for all pixels. This is a much simpler way and the result is reasonably realistic. We just add a constant light to the direct light before the color computation. The result can be seen in figure \ref{fig5}. 
 
 \section{Result}
-This lab was a bit more complex then the first one. We had same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning.
+This lab was a bit more complex then the first one. We had the same trouble with the comparisons of floating point number and integers eg. float == 0 is often not true due to bad precision of floating point numbers. This gave us some strange behaviors in the beginning. The quality of the final output could be improved even further using anti-aliasing to get smoother edges. However, our rendering time is already 20s and implementing this would make the program run about four times slower. 
 
 \begin{figure}[h!]
 	\centering	
@@ -60,7 +60,7 @@ This lab was a bit more complex then the first one. We had same trouble with the
 	\label{fig1}
 \end{figure}
 
-As can be seen above, a picture without lighting is ridiculously far from a realistic looking pictures but as soon as lighting and shadows are introduced it gets better real fast. It was fun to se the picture evolving for each completed implementation step. 
+As can be seen above, a picture without lighting is ridiculously far from a realistic looking pictures but as soon as lighting and shadows are introduced it gets better real fast. It was fun to see the picture evolving for each completed implementation step. 
 
 \begin{figure}[h!]
 	\centering
