@@ -32,7 +32,7 @@ Total pages: \pageref{LastPage}
 \clearpage
 \setcounter{page}{1}
 \section{Introduction}
-The purpose of this lab is to learn how to build a rastreriser and use it to render an image of a 3D environment that consists of triangular shapes. The lab also includes light models and camera movement. 
+The purpose of this lab is to learn how to build a rastrerizer and use it to render an image of a 3D environment that consists of triangular shapes. The lab also includes light models and camera movement. 
 \section{Assignment}
 The objective of third lab is pretty much the same as in the second with the raytracing. You are supposed to create a 3D-image but instead of tracing rays you are supposed to implement a rasteriser.
 \section{Method}
@@ -41,7 +41,7 @@ As a first step we built our rasteriser to project the 3D-environment onto a 2D 
 
 \begin{figure}[h!]
 	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshot1.png}
+	\includegraphics[width=0.4\linewidth]{screenshot1.png}
 	\caption{The outlines of the polygons}
 	\label{fig1}
 \end{figure}
@@ -51,7 +51,7 @@ To be able to draw the entire model, we had to go through add a lot of calculati
 
 \begin{figure}[h!]
 	\centering	
-	\includegraphics[width=0.45\linewidth]{screenshot15.png}
+	\includegraphics[width=0.4\linewidth]{screenshot15.png}
 	\caption{Output of the model without using a z-buffer}
 	\label{fig15}
 \end{figure}
@@ -59,7 +59,7 @@ To be able to draw the entire model, we had to go through add a lot of calculati
 As shown in the figure \ref{fig15} the blue box is in front of the red since no z-buffer is in use.
 
 \subsection{The z-buffer}
-To be able to determine at which depth each pixel is located, a z-buffer is used. A problem with the z-buffer is that you can not use linear interpolation along the z-axis whilst using the buffer. Instead, you can linearly interpolate the z$^{-1}$ and still get a good result. Below is a print of the z-buffer:
+To be able to determine at which depth each pixel is located, a z-buffer is used. A problem with the z-buffer is that you can not use linear interpolation along the z-axis whilst using the buffer. Instead, you can linearly interpolate the z$^{-1}$ to get correct results. To simplify this we only keep track of z$^{-1}$ not z. Below is a print of the z-buffer (z$^{-1}$-buffer):
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[h]{0.4\linewidth}
@@ -78,7 +78,7 @@ To be able to determine at which depth each pixel is located, a z-buffer is used
 
 \clearpage
 \subsection{Lighting}
-We implemented two ways to determine the direct lighting. The first one was calculating the direct light in each vertices and then interpolate the lighting for the rest of the polygon. This is shown below in figure \ref{fig3}. The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object just the object itself. We also uses approximation of indirect light in the sam way as in lab 2.
+We implemented two ways to determine the direct lighting on a surface. The first one was calculating the direct light in each vertices of the polygons and then interpolate the lighting to fill the entire shape. This is shown in the left figure below (figure \ref{fig3}). The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object it just involves shadows from the object itself. We also uses approximation of indirect light in the sam way as in lab 2 and add to the direct light to calculate the total amount of light.
 
 \begin{figure}[h!]
 	\centering
@@ -97,28 +97,29 @@ We implemented two ways to determine the direct lighting. The first one was calc
 	\caption{Two different ways to calculate direct light}
 \end{figure} 
 
-As can be seen in the figures above the vertex version gets some anomalies when two polygons lies parallel to each other side by side, eg. the roof of the room. There is an anomaly in the pixel version to, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation, to fix this we had to do perspective correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turd out to be pretty spectacular. (see figure \ref{fun} below)
+As can be seen in the figures above the vertex version gets some anomalies when two polygons have parallel normals and lies side by side, e.g. the roof of the room. Then you can see that the square-shaped roof is built up by two triangles. There is an anomaly in the pixel version to, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation, to fix this we had to do perspective correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turned out to be pretty spectacular. (see figure \ref{fun} below)
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.35\linewidth]{fun.png}
+	\includegraphics[width=0.3\linewidth]{fun.png}
 	\caption{An incorrect implementation of perspective correct interpolation}
 	\label{fun}
 \end{figure}
 \clearpage
+
 \section{Result}
-We had a lot more problem with this lab then the first two, but we are pleased with the result 
+When we finally got the interpolations correct the result turned out as a nice picture, we are pretty pleased with the result and the render times are as expected so short that movement in camera and light flows fluidly. The render times dropped from 20s in the raytracer to 100ms in the rastarizer. 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\linewidth]{screenshot5.png}
+	\includegraphics[width=0.4\linewidth]{screenshot5.png}
 	\caption{Output from the finished program}
 	\label{fig5}
 \end{figure}
 
 \section{just for fun}
- we did a fast implementation of the raytracing shadows in our rastarizer. Turned out that it was not that easy as just copying the functions needed and the point of using a rastarizer got lost due to the time consuming task to calculate shadows the raytracer way. Then we ran out of time do do it the proper way eg. with a shadow map.
+We did a fast implementation of the raytracing shadows in our rastarizer. Turned out that it was not that easy as just copying the functions needed and the point of using a rastarizer got lost due to the time consuming task to calculate shadows the raytracer way. Then we ran out of time do do it the proper way eg. with a shadow map.
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\linewidth]{shadows.png}
+	\includegraphics[width=0.4\linewidth]{shadows.png}
 	\caption{An incorrect implementation of shadows}
 	\label{shadows}
 \end{figure}
