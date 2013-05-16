@@ -37,7 +37,7 @@ The purpose of this lab is to learn how to build a rastrerizer and use it to ren
 The objective of third lab is pretty much the same as in the second with the raytracing. You are supposed to create a 3D-image but instead of tracing rays you are supposed to implement a rasteriser.
 \section{Method}
 \subsection{First implementation}
-As a first step we built our rasteriser to project the 3D-environment onto a 2D screen and then trace the vertices of each triangle and then draw the lines between the end-points \ref{fig1}. We also implemented the possibility to move the camera in the same fashion as in lab 2. 
+As a first step we built our rasteriser to project the 3D-environment onto a 2D screen and then trace the vertices of each triangle and then draw the lines between the end-points, see fig \ref{fig1}. We also implemented the possibility to move the camera in the same fashion as in lab 2. 
 
 \begin{figure}[h!]
 	\centering	
@@ -56,7 +56,7 @@ To be able to draw the entire model, we had to go through add a lot of calculati
 	\label{fig15}
 \end{figure}
 
-As shown in the figure \ref{fig15} the blue box is in front of the red since no z-buffer is in use.
+As shown in figure \ref{fig15} the blue box is in front of the red since no z-buffer is in use.
 
 \subsection{The z-buffer}
 To be able to determine at which depth each pixel is located, a z-buffer is used. A problem with the z-buffer is that you can not use linear interpolation along the z-axis whilst using the buffer. Instead, you can linearly interpolate the z$^{-1}$ to get correct results. To simplify this we only keep track of z$^{-1}$ not z. Below is a print of the z-buffer (z$^{-1}$-buffer):
@@ -78,7 +78,7 @@ To be able to determine at which depth each pixel is located, a z-buffer is used
 
 \clearpage
 \subsection{Lighting}
-We implemented two ways to determine the direct lighting on a surface. The first one was calculating the direct light in each vertices of the polygons and then interpolate the lighting to fill the entire shape. This is shown in the left figure below (figure \ref{fig3}). The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object it just involves shadows from the object itself. We also uses approximation of indirect light in the sam way as in lab 2 and add to the direct light to calculate the total amount of light.
+We implemented two ways to determine the direct lighting on a surface. The first one was calculating the direct light in each vertices of the polygons and then interpolate the lighting to fill the entire shape. This is shown in the left figure below (figure \ref{fig3}). The second approach was to calculate the direct light for each pixel, see figure \ref{fig4} below. Nether of this approaches implements shadows on an object from an other object it just involves shadows from the object itself. We also uses approximation of indirect light in the same way as in lab 2 and add to the direct light to calculate the total amount of light.
 
 \begin{figure}[h!]
 	\centering
@@ -97,7 +97,7 @@ We implemented two ways to determine the direct lighting on a surface. The first
 	\caption{Two different ways to calculate direct light}
 \end{figure} 
 
-As can be seen in the figures above the vertex version gets some anomalies when two polygons have parallel normals and lies side by side, e.g. the roof of the room. Then you can see that the square-shaped roof is built up by two triangles. There is an anomaly in the pixel version to, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation, to fix this we had to do perspective correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turned out to be pretty spectacular. (see figure \ref{fun} below)
+As can be seen in the figures above the vertex version gets some anomalies when two polygons have parallel normals and lies side by side, e.g. at the roof of the room. Then you can see that the square-shaped roof is built up by two triangles. There is an anomaly in the pixel version too, if you look closely you can see that the shape of the light is a bit odd. This is caused by an incorrect interpolation. To fix this we had to do perspective-correct interpolation instead of linear interpolation when calculating the direct light. We had some trouble doing this and the result of an incorrect implementation turned out to be pretty spectacular. (see figure \ref{fun} below)
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.3\linewidth]{fun.png}
@@ -107,7 +107,7 @@ As can be seen in the figures above the vertex version gets some anomalies when 
 \clearpage
 
 \section{Result}
-When we finally got the interpolations correct the result turned out as a nice picture, we are pretty pleased with the result and the render times are as expected so short that movement in camera and light flows fluidly. The render times dropped from 20s in the raytracer to 100ms in the rastarizer. 
+When we finally got the interpolations correct, the result turned out as a nice picture. We are pretty pleased with the result and the render times are, as expected, so quick that movement with the camera and light flows fluidly. The render times dropped from 20 seconds in the raytracer to 100ms in the rasterizer. 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.4\linewidth]{screenshot5.png}
